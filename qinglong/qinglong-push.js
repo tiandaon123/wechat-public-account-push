@@ -928,8 +928,35 @@ const dataAggregationService = {
           logInfo(`用户 ${user.name} 未配置基础天气接口(weatherCityCode)，仅使用 city 字段作为基础信息`)
         }
       }
+       // ==================== 追加：第二城市基础天气（可选） ====================
+      // 目标：同一条消息里同时展示：她的城市天气 + 你的城市天气
+      // 配置方式：在 USER_INFO 里添加 secondaryWeather 对象，并设置 enabled=true
+      if (user.secondaryWeather && user.secondaryWeather.enabled === true) {
+        const sec = user.secondaryWeather
 
-  
+        // 必填：城市编码
+        if (sec.weatherCityCode) {
+          const prefix = (sec.prefix || 'my_').trim() // 默认前缀 my_
+          const secCityName = sec.city || '另一城市'
+
+          const weather2 = await weatherService.getWeather(secCityName, sec.weatherCityCode)
+
+          if (!weather2.error) {
+            data[`${prefix}city`] = { value: weather2.city }
+            data[`${prefix}weather`] = { value: weather2.weather }
+            data[`${prefix}max_temperature`] = { value: weather2.max_temperature }
+            data[`${prefix}min_temperature`] = { value: weather2.min_temperature }
+            data[`${prefix}wind_direction`] = { value: weather2.wind_direction }
+            data[`${prefix}wind_scale`] = { value: weather2.wind_scale }
+          } else {
+            logWarning(`用户 ${user.name} 第二城市天气获取失败：${weather2.error}`)
+          }
+        } else {
+          logWarning(`用户 ${user.name} 已启用 secondaryWeather 但未配置 secondaryWeather.weatherCityCode`)
+        }
+      }
+
+      
       // 生日和纪念日处理
       let birthdayMessage = ''
       if (user.festivals && user.festivals.length > 0) {
