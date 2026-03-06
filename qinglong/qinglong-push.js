@@ -909,7 +909,8 @@ const dataAggregationService = {
 
       // 基础信息
       data.date = { value: dayjs().format('YYYY年MM月DD日') }
-      data.morning_text = { value: '兔子早安，开启活力一天！\n记得多喝水、忌久坐，注意休息你的大眼，以及适当运动。' }
+      data.morning_1= { value: '兔子早安，开启活力一天！' }
+      data.morning_2 = { value: '记得多喝水、忌久坐，注意休息你的大眼，以及适当运动。' }
       
       // 获取基础天气信息（仅在配置了 weatherCityCode 时调用）
       if (user.weatherCityCode) {
