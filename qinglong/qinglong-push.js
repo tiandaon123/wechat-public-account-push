@@ -909,8 +909,14 @@ const dataAggregationService = {
 
       // 基础信息
       data.date = { value: dayjs().format('YYYY年MM月DD日') }
-      data.morning_1= { value: '兔子早安，开启活力一天！' }
-      data.morning_2 = { value: '记得多喝水、忌久坐，注意休息你的大眼，以及适当运动。' }
+      // 可配置：自定义字段（从 user.customFields 注入到模板 data）
+      if (user.customFields && typeof user.customFields === 'object') {
+        for (const [k, v] of Object.entries(user.customFields)) {
+          if (v !== undefined && v !== null) {
+            data[k] = { value: String(v) }
+          }
+        }
+      }
       
       // 获取基础天气信息（仅在配置了 weatherCityCode 时调用）
       if (user.weatherCityCode) {
