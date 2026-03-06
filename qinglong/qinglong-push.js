@@ -358,7 +358,11 @@ const validateTemplateConfig = () => {
     const validVariables = ['date', 'city', 'weather', 'max_temperature', 'min_temperature',
       'wind_direction', 'wind_scale', 'love_day', 'birthday_message', 'moment_copyrighting',
       'morning_greeting', 'evening_greeting', 'tian_weather', 'network_hot', 'today_courses',
-      'chinese_note', 'english_note']
+      'chinese_note', 'english_note',
+      // ✅ 下面是你自定义/扩展的变量（用于早安 + 双城市天气）
+      'morning_text', 'morning_1', 'morning_2',
+      'my_city', 'my_weather', 'my_max_temperature', 'my_min_temperature',
+      'my_wind_direction', 'my_wind_scale']
 
     const templateVars = template.desc.match(/\{\{([^}]+)\.DATA\}\}/g) || []
     templateVars.forEach(varMatch => {
